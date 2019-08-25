@@ -28,53 +28,7 @@ class Timetable():
                                     print(classs.days)"""
         pass
         #print(self.courses.classes.times)
-    def get_session(self,day):
-        """ Return session list of one day: e.g. Timatable.get_session(1) = [8,9,13,15]"""
-        pass
-
-    def get_buildings(self,day):
-        buildings = []
-        pass
-
-def Timetable_evaluation(timetables,time_weight=0.8,dist_weight=0.2):
-    """ 
-    Input => timetables: list of Timetable objects. 
-    Output => Best Timetable
-    """
-    score = 0
-    for timetable in timetables:
-        time_score = calculate_time(timetable)
-        distance_score = calculate_dist(timetable)
-        score = time_score*time_weight + distance_score*dist_weight
-        if score > best_score:
-            best_score,best_timetable = score,timetable
-    return timetable       
-
-def calculate_dist(timetable):   # Need to be normalized!!!
-    """
-    Calculate distances a student need to walk in one day more than two sessions present in the same day.
-    """
-    distscore = 0
-    for day in range(5):
-        blds = timetable.get_buildings(day)
-        if len(blds) >2:
-            for i in range(len(blds)-1):
-                distscore += distance(blds[i],blds[i+1])
-    return distscore
-
-def calculate_time(timetable):   # Need to be normalized!!!
-    """
-    Calculate free hours in one week. If got a full day is free, add 0.2 bonus score 
-    """
-    timescore = 0
-    for day in range(5):
-        sessions = timetable.get_sessions(day)
-        try:
-            freehours = 12 - (sessions[-1] - sessions[0]+1)   # Can be optimised to add bonus on a half-day free
-        except IndexError:
-            freehours = 12*1.2   # Add bonus score for a free day.
-        timescore += freehours 
-    return timescore
+                            
 
 class Course():
     name = ""
