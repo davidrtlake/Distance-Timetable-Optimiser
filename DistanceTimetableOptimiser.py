@@ -30,8 +30,8 @@ coordinates = {"1":(766,598), "2":(898,560),"3":(899,642),"3A":(377,377),
                "93D":(504,289),"94":(594,594),"96":(321,604),"97":(444,566),
                "98A":(510,380),"98B":(440,364),"99":(306,360)}
 
-buildingA = input("Building A: ")
-buildingB = input("Building B: ")
+#buildingA = input("Building A: ")
+#buildingB = input("Building B: ")
 
 def distance(bA, bB):
     """return the distance between two buildings"""
@@ -53,7 +53,18 @@ def distance(bA, bB):
         
     return ds
 
-distance(buildingA, buildingB)
+#distance(buildingA, buildingB)
+
+def CheckDuplicate(arr):
+    allItems = []
+    
+    for elem in arr:
+        for i in elem:
+            allItems.append(i)
+
+    if len(allItems) > len(set(allItems)):
+        return True
+    return False          
 
 class Timetable():
     courses = []
@@ -68,30 +79,29 @@ class Timetable():
         Currently throws an error when using .remove
     """
     def RemoveConflicts(self):
-        #print(self.courses.classes.times)
-        """for i in range(0, 5):       
-            if item in nonStaticClasses[i]:
-                for course in self.courses:
-                    for classs in course.classes:
-                        for time in classs.times:
-                            for day in classs.days:
-                                if day == i and time == item:
-                                    print(i)
-                                    print(item)
-                                    classs.days.remove(i)
-                                    classs.times.remove(item)
-                                    print(classs.days)"""
-        pass
-        #print(self.courses.classes.times)
-                            
+        temp = []
+        for i in range(1, 6):
+            for course in self.courses:
+                for classs in course.classes:
+                    for sessions in classs.GetNonStaticSessions(i):
+                        temp = staticClasses[i-1] + [sessions]
+                        if CheckDuplicate(temp) == True:
+                            j = 0
+                            while j < len(classs.times):
+                                if classs.times[j] == sessions and classs.days[j] == i:
+                                    del classs.times[j]
+                                    del classs.days[j]
+                                    del classs.buildings[j]
+                                else:
+                                    j += 1                            
 
 class Course():
     name = ""
     classes = []
     global staticClasses
     global nonStaticClasses
-    staticClasses = ([],[],[],[],[])
-    nonStaticClasses = ([],[],[],[],[])
+    staticClasses = [[],[],[],[],[]]
+    nonStaticClasses = [[],[],[],[],[]]
     def __init__(self, name, classes):
         self.classes = classes
         self.name = name
@@ -144,14 +154,21 @@ class Class:
         for i in range(0, len(self.days)):
             if self.days[i] == day:
                 buildings.append(self.buildings[i])
-        print(buildings)
+        return buildings
         
     def GetSessions(self, day):
         sessions = []
         for i in range(0, len(self.times)):
             if self.days[i] == day:
                 sessions.append(self.times[i])
-        print(sessions)
+        return sessions
+
+    def GetNonStaticSessions(self, day):
+        nsessions = []
+        for i in range(0, len(self.times)):
+            if self.days[i] == day and self.static == False:
+                nsessions.append(self.times[i])
+        return nsessions
 
     
 #Making classes
@@ -159,9 +176,10 @@ CSSE2310Practical = Class([[10, 11], [8, 10], [8, 10], [10, 12], [12, 14],
                            [14, 16], [16, 18], [14, 16], [18, 20], [16, 18],
                            [18, 20]], [3, 3, 2, 1, 1, 1, 1, 2, 2, 4, 4],
                           ["50", "50", "50", "50", "50", "50",
-                           "50", "50", "50", "50", "50"], True, True)
+                           "50", "50", "50", "50", "50"], False, True)
 CSSE2310Lecture = Class([[12, 13], [15]], [3, 4], ["27A", "49"], True, True)
-COMP3506Tute = Class([14, 15, 16, 17, 8, 9, 12, 13, 9, 10, 11, 11, 11],
+COMP3506Tute = Class([[14], [15], [16], [17], [8], [9], [12], [13],
+                      [9], [10], [11], [12], [11]],
                      [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 5],
                      ["01", "01", "09", "35", "83", "83", "09", "09",
                       "83", "09", "09", "09", "35"], False, False)
@@ -180,8 +198,11 @@ for course in Timetable.courses:
     course.GetNonStatic()
 print("STATIC", staticClasses)
 print("NON STATIC", nonStaticClasses)
+print("BEFORE:", COMP3506Tute.GetSessions(3))
+    
 Timetable.RemoveConflicts()
-CSSE2310Practical.GetBuildings(1)
-CSSE2310Practical.GetSessions(1)
+print("AFTER:", COMP3506Tute.GetSessions(3))
+COMP3506Tute.GetBuildings(3)
+COMP3506Tute.GetSessions(3)
 
     
