@@ -30,8 +30,8 @@ coordinates = {"1":(766,598), "2":(898,560),"3":(899,642),"3A":(377,377),
                "93D":(504,289),"94":(594,594),"96":(321,604),"97":(444,566),
                "98A":(510,380),"98B":(440,364),"99":(306,360)}
 
-#buildingA = input("Building A: ")
-#buildingB = input("Building B: ")
+##buildingA = input("Building A No.")
+##buildingB = input("Building B No.")
 
 def distance(bA, bB):
     """return the distance between two buildings"""
@@ -47,9 +47,8 @@ def distance(bA, bB):
     except TypeError as e:
         print("Wrong building number")
     else:
-        print("coordA =",A)
-        print("coordB =",B)
-        print("The distance is",ds)
+        print("The distance between Building", buildingA, "and Building", buildingB,
+              "is", ds)
         
     return ds
 
@@ -224,11 +223,46 @@ COMP3506Tute = Class([[14], [15], [16], [17], [8], [9], [12], [13],
                      ["01", "01", "09", "35", "83", "83", "09", "09",
                       "83", "09", "09", "09", "35"], False, False)
 COMP3506Lecture = Class([[8, 9, 10]], [4], ["27A"], True, True)
+
+INFS1200Lecture = Class([[10, 11]], [2], ["49"], True, False)
+
+INFS1200Tute = Class([[8], [17], [17], [8], [9], [9], [15], [8], [8], [17],
+                      [8], [16], [8], [9], [9], [10], [13], [16], [8]],
+                     [1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5, 5, 5],
+                     ["78", "09", "09", "09", "09", "09", "83", "83", "26", "01",
+                      "78", "47A", "09", "83", "83", "09", "07", "09", "78"],
+                     False, False)
+
+INFS1200Practical = Class([[12], [13], [16], [8], [9], [12], [13], [16], [17], [12],
+                      [13], [8], [9], [16], [17], [12], [13], [14], [15]],
+                     [1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5],
+                     ["78", "78", "78", "78", "78", "78", "78", "78", "78", "78",
+                      "78", "78", "78", "78", "78", "78", "78", "78", "78"],
+                     False, False)
+
+DECO1800Lecture = Class([[11]], [1], ["50"], True, True)
+
+DECO1800Contact = Class([[12, 13], [16, 17], [12, 13], [10, 11]], [1, 1, 3, 2],
+                     ["78", "78", "78", "78"], False, True)
+
+DECO1800Practical = Class([[12, 13], [10, 11], [12, 13], [14, 15], [16, 17], [8, 9],
+                           [16, 17], [18, 19]], [2, 3, 3, 3, 3, 4, 2, 1],
+                          ["78", "78", "78", "78", "78", "78", "78", "78"],
+                          False, True)
+
+
+
 #Making courses
 CSSE2310 = Course("CSSE2310", [CSSE2310Practical, CSSE2310Lecture])
 COMP3506 = Course("COMP3506", [COMP3506Tute, COMP3506Lecture])
+INFS1200 = Course("INFS1200", [INFS1200Lecture, INFS1200Tute, INFS1200Practical])
+DECO1800 = Course("INFS1200", [DECO1800Lecture, DECO1800Contact, DECO1800Practical])
+
+
+
+
 #Creates timetable of courses
-Timetable = Timetable([CSSE2310, COMP3506])
+Timetable = Timetable([CSSE2310, COMP3506, INFS1200, DECO1800])
 """
     For each courses in the timetable, produce a 2d list of arrays of static
     and non static class times.
